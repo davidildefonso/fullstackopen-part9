@@ -3,14 +3,12 @@ interface ParamsParser {
   value2: number;
 }
 
-const parseArguments = (args: Array<string>): ParamsParser => {
-  if (args.length < 4) throw new Error('Not enough arguments');
-  if (args.length > 4) throw new Error('Too many arguments');
+const parseArguments = (height: string, weight: string ): ParamsParser => {
 
-  if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
+  if (!isNaN(Number(height)) && !isNaN(Number(weight))) {
     return {
-      value1: Number(args[2]),
-      value2: Number(args[3])
+      value1: Number(height),
+      value2: Number(weight)
     }
   } else {
     throw new Error('Provided values were not numbers!');
@@ -19,25 +17,25 @@ const parseArguments = (args: Array<string>): ParamsParser => {
 
 const calculateBmi = (a: number, b: number) => {
 	const bmi = b * 10000 / (a * a);
-	if(bmi < 25){
-		console.log("Normal (healthy weight)");
-		return;
+	if(bmi < 25){	
+		return "Normal (healthy weight)";
 	}
-	if(bmi <= 29){
-		console.log("Overweight");
-		return;
-	}
-	console.log("Obese");
-	return;
+	if(bmi <= 29){	
+		return "Overweight";
+	}	
+	return "Obese";
 }
 
-try {
-  const { value1, value2 } = parseArguments(process.argv);
-  calculateBmi(value1, value2);
-} catch (error: unknown) {
-  let errorMessage = 'Something bad happened.'
-  if (error instanceof Error) {
-    errorMessage += ' Error: ' + error.message;
-  }
-  console.log(errorMessage);
+export const bmiCalculator = (height: string, weight: string) => {
+	try {
+		const { value1, value2 } = parseArguments(height, weight);
+		return calculateBmi(value1, value2);
+	} catch (error: unknown) {
+		let errorMessage = 'Something bad happened.'
+		if (error instanceof Error) {
+			errorMessage += ' Error: ' + error.message;
+		}
+		return errorMessage;
+	}
 }
+
