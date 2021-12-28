@@ -3,18 +3,16 @@ interface ExerciseCalculatorParamsParser {
   target: number;
 }
 
-const parsedArguments = (...args: Array<string>): ExerciseCalculatorParamsParser => {
-	const arrayValues = args.slice(2, args.length - 1)
-		.map((val, i) => i === 0 ? val.substring(1,) : i === args.length - 4 ?  val.substring(0,val.length - 1) : val )
-		.map(el => Number(el) );
+const parsedArguments = (hours: Array<string>, goal: string): ExerciseCalculatorParamsParser => {
+	const arrayValues = hours.map(el => Number(el) );
 
-	if ( !isNaN(Number(args[args.length - 1]))
+	if ( !isNaN(Number(goal))
 		&& !arrayValues.some(el =>  isNaN(el)  )
 	) {	
 		
 		return {
 			dailyHours: arrayValues,
-			target: Number(args[args.length - 1])
+			target: Number(goal)
 		};
 
 	} else {
@@ -57,13 +55,18 @@ const calculateExercises  = (dailyHours: Array<number>, target: number) : Exerci
 	};
 }
 
-try {
-  const { dailyHours, target } = parsedArguments(...process.argv);
-  console.log(calculateExercises (dailyHours, target));
-} catch (error: unknown) {
-  let errorMessage = 'Something bad happened.'
-  if (error instanceof Error) {
-    errorMessage += ' Error: ' + error.message;
-  }
-  console.log(errorMessage);
+
+export const calculate = (hours: Array<string>, goal: string) => {
+console.log(hours, goal)
+	try {
+		const { dailyHours, target } = parsedArguments(hours, goal);
+		return calculateExercises (dailyHours, target);
+	} catch (error: unknown) {
+		let errorMessage = 'Something bad happened.'
+		if (error instanceof Error) {
+			errorMessage += ' Error: ' + error.message;
+		}
+		return errorMessage;
+	}
 }
+
