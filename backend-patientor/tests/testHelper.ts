@@ -129,3 +129,4 @@ export const  initialDiagnoses = [
 ];
 
 
+export const getPatientsCount = () => initialPatients

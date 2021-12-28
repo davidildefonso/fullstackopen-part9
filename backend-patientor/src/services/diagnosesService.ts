@@ -7,11 +7,24 @@ const getDiagnoses = (): Array<DiagnosesEntry> => {
 }
 
 
-const addDiagnoses = () => {
-  return null;
+
+
+const addDiagnoses = ( entry: DiagnosesEntry ): DiagnosesEntry => { 
+  diagnoses.push(entry);
+  return entry;
 };
+
+
+
+const findById = (code: string): DiagnosesEntry | undefined => {
+  const patient = diagnoses.find(d => d.code === code);
+  return patient;
+};
+
+
 
 export default {
   getDiagnoses,
-  addDiagnoses  
+  addDiagnoses ,
+  findById
 };

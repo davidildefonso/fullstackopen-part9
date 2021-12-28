@@ -1,4 +1,11 @@
-export type Gender = 'male' | 'female' | 'not specified' ;
+
+export enum Gender {
+  Male = 'male',
+  Female = 'female',
+  Other = 'other'
+  
+}
+
 
 export interface PatientsEntry {
   id: string;
@@ -16,6 +23,10 @@ export interface DiagnosesEntry {
   latin?: string;
 }
 
+export type NewPatientEntry = Omit<PatientsEntry, 'id'>;
 
 export type NonSensitivePatientsEntry = Omit<PatientsEntry, 'ssn'>;
 
+export type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown };
+
+export type DiagnosesFields = { code: unknown, name: unknown, latin: unknown};
