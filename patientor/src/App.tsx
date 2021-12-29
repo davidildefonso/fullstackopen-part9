@@ -6,8 +6,9 @@ import { Button, Divider, Header, Container } from "semantic-ui-react";
 import { apiBaseUrl } from "./constants";
 import { useStateValue } from "./state";
 import { Patient } from "./types";
-
+import { setPatientList } from './state/reducer';
 import PatientListPage from "./PatientListPage";
+import PatientDetailsPage from './PatientDetailsPage';
 
 const App = () => {
   const [, dispatch] = useStateValue();
@@ -19,7 +20,7 @@ const App = () => {
         const { data: patientListFromApi } = await axios.get<Patient[]>(
           `${apiBaseUrl}/patients`
         );
-        dispatch({ type: "SET_PATIENT_LIST", payload: patientListFromApi });
+        dispatch(setPatientList(patientListFromApi));
       } catch (e) {
         console.error(e);
       }
@@ -37,9 +38,12 @@ const App = () => {
           </Button>
           <Divider hidden />
           <Switch>
-            <Route path="/">
-              <PatientListPage />
-            </Route>
+				<Route path="/patients/:id">
+					<PatientDetailsPage/>
+				</Route>						
+				<Route path="/">
+					<PatientListPage />
+				</Route>
           </Switch>
         </Container>
       </Router>
