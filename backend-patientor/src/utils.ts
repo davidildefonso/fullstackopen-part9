@@ -7,7 +7,8 @@ const toNewPatientEntry = (data: Fields): NewPatientEntry  => {
 		dateOfBirth: parseDate(data.dateOfBirth),
 		ssn: parseSsn(data.ssn),
 		gender: parseGender(data.gender),
-		occupation: parseOccupation(data.occupation)
+		occupation: parseOccupation(data.occupation),
+		entries: parseEntries(data.entries)
 	}	
 
 	return newEntry;
@@ -65,6 +66,13 @@ const parseSsn = (ssn: unknown): string => {
       throw new Error('Incorrect or missing ssn: ' + ssn);
   }
   return ssn;
+};
+
+const parseEntries = (entries: unknown): any => {
+//   if (!entries || !isGender(gender)) {
+//       throw new Error('Incorrect or missing gender: ' + gender);
+//   }
+  return entries;
 };
 
 

@@ -6,6 +6,10 @@ export enum Gender {
   
 }
 
+export interface Entry {
+	content: string
+}
+
 
 export interface PatientsEntry {
   id: string;
@@ -14,6 +18,7 @@ export interface PatientsEntry {
   ssn: string;
   gender?: Gender;
   occupation?: string;
+  entries: Array<Entry>;
 }
 
 
@@ -27,6 +32,6 @@ export type NewPatientEntry = Omit<PatientsEntry, 'id'>;
 
 export type NonSensitivePatientsEntry = Omit<PatientsEntry, 'ssn'>;
 
-export type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown };
+export type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown , entries: unknown};
 
 export type DiagnosesFields = { code: unknown, name: unknown, latin: unknown};
