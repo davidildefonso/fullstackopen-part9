@@ -127,6 +127,122 @@ test('a valid  patient  can be added ', async () => {
 });
 
 
+test('a health check entry of a patient  can be added ', async () => {
+
+	const selectedPatient =  patientService.getPatients()[0];
+	const selectedPatientEntriesCount = selectedPatient.entries.length;
+
+	const newEntry = {
+		type: "HealthCheck",
+		description: "annual wellness check" ,
+		date: "2021-12-29",
+		specialist: "Dr. Jacob",
+		diagnosisCodes: ["N33.223", "A2.32", "J05.50"] ,
+		healthCheckRating: 2
+	};
+
+	const response = await api
+						.post(`/api/patients/${selectedPatient.id}/entries`)	
+						.send(newEntry)
+						.expect(200)
+						.expect('Content-Type', /application\/json/);				
+
+	
+	expect(response.body).toHaveProperty("id") ;
+	expect(response.body.type).toBe("HealthCheck");
+	expect(patientService.getPatients()[0].entries.length).toBe(selectedPatientEntriesCount + 1);
+	expect(response.body).toEqual(patientService.getPatients()[0].entries[selectedPatientEntriesCount]);
+	
+});
+
+ 
+test('a hospital entry of a patient  can be added ', async () => {
+
+	const selectedPatient =  patientService.getPatients()[0];
+	const selectedPatientEntriesCount = selectedPatient.entries.length;
+
+	const newEntry = {
+		type: "Hospital",
+		description: "leg fracture due to fall of 3m  during earthqueake" ,
+		date: "2021-12-25",
+		specialist: "Dr. House",
+		diagnosisCodes: ["Z33.223"] ,
+		discharge: {
+          date: '2015-01-16',
+          criteria: 'leg was treated and casted,  patient is stable',
+        }
+	};
+
+	const response = await api
+						.post(`/api/patients/${selectedPatient.id}/entries`)	
+						.send(newEntry)
+						.expect(200)
+						.expect('Content-Type', /application\/json/);				
+
+
+	expect(response.body).toHaveProperty("id") ;
+	expect(response.body.type).toBe("Hospital");	
+	expect(patientService.getPatients()[0].entries.length).toBe(selectedPatientEntriesCount + 1);
+	expect(response.body).toEqual(patientService.getPatients()[0].entries[selectedPatientEntriesCount]);
+
+	
+});
+
+test('a occupational health entry of a patient  can be added ', async () => {
+
+	const selectedPatient =  patientService.getPatients()[0];
+	const selectedPatientEntriesCount = selectedPatient.entries.length;
+
+	const newEntry = {
+		type: "OccupationalHealthcare",
+		description: "burn arm during job welding" ,
+		date: "2021-12-29",
+		specialist: "Dr. Heisenberg",
+		employerName: 'Borealis',
+		diagnosisCodes: ["L33.223"] ,
+		sickLeave: {
+          startDate: '2021-12-29',
+          endDate: '2022-01-02',
+        }
+	};
+
+	const response = await api
+						.post(`/api/patients/${selectedPatient.id}/entries`)	
+						.send(newEntry)
+						.expect(200)
+						.expect('Content-Type', /application\/json/);				
+
+	
+	expect(response.body).toHaveProperty("id") ;
+	expect(response.body.type).toBe("OccupationalHealthcare");	
+	expect(patientService.getPatients()[0].entries.length).toBe(selectedPatientEntriesCount + 1);
+	expect(response.body).toEqual(patientService.getPatients()[0].entries[selectedPatientEntriesCount]);
+
+	
+});
+
+test('a non existing  entry is not added ', async () => {
+
+	const selectedPatient =  patientService.getPatients()[0];
+
+	const newEntry = {
+		type: "non existing type"
+	};
+
+	const response = await api
+						.post(`/api/patients/${selectedPatient.id}/entries`)	
+						.send(newEntry)
+						.expect(400)								
+
+	expect(response.text).toBe("Something went wrong. Error: Error: Incorrect  type" );	
+
+
+	
+});
+
+
+
+
 afterAll(done => { 	
  	done()
 })

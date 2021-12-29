@@ -21,31 +21,37 @@ export enum HealthCheckRating {
   "CriticalRisk" = 3
 }
 
-interface HealthCheckEntry extends BaseEntry {
+export interface HealthCheckEntry extends BaseEntry {
   type: "HealthCheck";
   healthCheckRating: HealthCheckRating;
 }
 
-interface Discharge {
+export interface Discharge {
 	date: string,
 	criteria: string
 }
 
-interface HospitalEntry extends BaseEntry {
+export interface HospitalEntry extends BaseEntry {
   type: "Hospital";
   discharge: Discharge;
 }
 
-interface SickLeave {
+export interface SickLeave {
 	startDate: string,
 	endDate: string
 }
 
-interface OccupationalHealthcareEntry extends BaseEntry {
+export interface OccupationalHealthcareEntry extends BaseEntry {
   type: "OccupationalHealthcare";
   sickLeave	: SickLeave;
   employerName: string
 }
+
+export type TypeOptions =
+  | "Hospital"
+  | "OccupationalHealthcare"
+  |  "HealthCheck";
+ 
 
 
 
@@ -72,10 +78,30 @@ export interface DiagnosesEntry {
   latin?: string;
 }
 
+
+
 export type NewPatientEntry = Omit<PatientsEntry, 'id'>;
+
+
 
 export type NonSensitivePatientsEntry = Omit<PatientsEntry, 'ssn'>;
 
 export type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown , entries: unknown};
 
 export type DiagnosesFields = { code: unknown, name: unknown, latin: unknown};
+
+export interface VisitFields { 
+	type: unknown;
+	description: unknown;
+	date: unknown;
+	specialist: unknown;
+	diagnosisCodes: unknown;
+	healthCheckRating: unknown;
+	discharge: unknown;
+	sickLeave: unknown;
+	employerName: unknown;
+}
+
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+// Define Entry without the 'id' property
+export type EntryWithoutId = UnionOmit<Entry, 'id'> | undefined;

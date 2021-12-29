@@ -1,6 +1,6 @@
 import patients from '../../data/patientsTs';
 
-import { PatientsEntry , NewPatientEntry,  NonSensitivePatientsEntry} from '../types';
+import { PatientsEntry , NewPatientEntry,   NonSensitivePatientsEntry, Entry} from '../types';
 
 const getPatients = (): Array<PatientsEntry> => {
   return patients;
@@ -29,6 +29,22 @@ const addPatient = ( entry: NewPatientEntry ): PatientsEntry => {
   return newPatientEntry;
 };
 
+const addPatientEntry = ( { patientId, newEntry} : any   ): Entry => {
+  const newVisitEntry: Entry = {    
+	id: new Date().toISOString(),
+    ...newEntry	
+  };
+
+  patients.map( p => p.id === patientId 
+  	? {...p, entries: p.entries.push(newVisitEntry) } 
+	: p);
+   
+  return newVisitEntry;
+};
+
+
+
+
 
 
 const findById = (id: string): PatientsEntry | undefined => {
@@ -41,5 +57,6 @@ export default {
   getPatients,
   getNonSensitivePatientsEntries,
   addPatient,
-  findById 
+  findById ,
+  addPatientEntry
 };
