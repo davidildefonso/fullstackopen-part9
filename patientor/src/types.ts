@@ -21,6 +21,26 @@ export interface Patient {
 }
 
 
+export type TypeOptions =
+  | "Hospital"
+  | "OccupationalHealthcare"
+  |  "HealthCheck"
+  ;
+ 
+
+export interface InitialEntryTypesForm {
+	type: undefined	
+	description: undefined;
+	date: undefined;
+	specialist: undefined;
+	diagnosisCodes:undefined;
+	healthCheckRating: undefined;
+	discharge: undefined;
+	sickLeave	: undefined;
+	employerName: undefined;
+}
+
+
 export interface EntryBase{
 	id: string;
 	description: string;
@@ -70,3 +90,11 @@ export type Entry =
   | OccupationalHealthcareEntry
   | HealthCheckEntry;
 
+export type NewEntryType = {
+	entry: Entry,
+	id: string
+};
+
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+// Define Entry without the 'id' property
+export type EntryWithoutId = UnionOmit<Entry, 'id'> | undefined;
