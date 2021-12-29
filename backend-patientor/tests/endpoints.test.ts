@@ -46,15 +46,32 @@ test('a single diagnoses endpoint can be seen ', async () => {
 });
 
 
-test('a single patient endpoint can be seen ', async () => {
-	const patientToView = initialPatients[0];
+test('a single patient endpoint can be seen with different entries field ', async () => {
+	let patientToView = initialPatients[0];
 
-	const response = await api
+	let response = await api
 		.get(`/api/patients/${patientToView.id}`)
 		.expect(200)
 		.expect('Content-Type', /application\/json/);	
-
+	
 	expect(response.body).toEqual(initialPatients[0]);	
+
+	patientToView = initialPatients[1];
+	response = await api
+		.get(`/api/patients/${patientToView.id}`)
+		.expect(200)
+		.expect('Content-Type', /application\/json/);	
+	
+	expect(response.body).toEqual(initialPatients[1]);
+
+	patientToView = initialPatients[3];
+	response = await api
+		.get(`/api/patients/${patientToView.id}`)
+		.expect(200)
+		.expect('Content-Type', /application\/json/);	
+	
+	expect(response.body).toEqual(initialPatients[3]);
+
 });
 
 
